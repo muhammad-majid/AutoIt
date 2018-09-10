@@ -1,0 +1,3 @@
+  ---- OutlookAddinClient_x32_10_12152014.msi /qn ExtraParameters="-skip" ----
+  ---- OutlookAddinClient_x64_10_12152014.msi /qn ExtraParameters="-skip" ----
+

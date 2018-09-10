@@ -1,0 +1,7 @@
+Log the output.
+Uninstall eset with or without password.
+Check for success, failure
+if failure, quit..
+if success, proceed with installation of SEP.
+Log the output.
+

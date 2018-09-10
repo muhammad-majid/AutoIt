@@ -1,0 +1,142 @@
+var Title = "Custom Package - Completely User Defined (MODIFY)";
+var GUID = "510a1f13-bd50-45fc-9124-e5f070b27bc6";
+
+// The following is a NON-FUNCTIONAL example of a script requiring further 
+// user customization.  Feel free to use this skeleton in whole or in part, or 
+//create your own from scratch.
+
+
+//     !!! YOU MUST MODIFY OR RE-WRITE THIS SCRIPT!!! 
+
+
+// The following variables have been embedded by the CSI at the start of this script 
+// Use (or do not use) as needed for your custom package
+// var GUID = "";
+// var Title = "";
+
+// Add any additional variables or parameters you may need below
+var exampleVariable = "";
+
+function main() {
+
+  if ( !GUID ) {
+    server.logMessage( "No GUID supplied for package " + Title );
+    return 1;
+  }
+
+  server.logMessage( "Running package " + Title );
+  server.logMessage( "GUID : " + GUID );
+
+  // There must be at least two embedded files:
+  //   - This script is the first file, at index 0
+  //   - The first file to run is the second file, at index 1
+  //   - Any additional files added can be similarly referenced as needed..
+  var numFiles = server.numberOfFiles;
+  if ( numFiles < 2 ) {
+    server.logMessage( "No embedded files. Aborting." );
+    return 1;
+  }
+
+  try {
+    // For example - you might want to run the first executable file you
+    // included with certain command line parameters.
+    // Below we show a reference implementation for checking this file, 
+    // and constructing a command line argument to call it with.  Modify 
+    // anything you need as required for your implementation.
+
+    var filename = server.getFilename( 1 );
+    if ( !filename ) {
+      server.logMessage( "Cannot read filename: " + filename + "  from file. Corrupted file." );
+      return 1;
+    }
+
+    var shell = new ActiveXObject( "WScript.Shell" );
+    var temp = shell.ExpandEnvironmentStrings( "%TEMP%" );
+
+    var sys = new ActiveXObject( "Scripting.FileSystemObject" );
+    var outdir;
+    var tempPath = temp + "\\" + GUID;
+    try {
+      if ( sys.FolderExists( tempPath ) ) {
+        outdir = sys.GetFolder( tempPath );
+      } else {
+        outdir = sys.CreateFolder( tempPath );
+      }
+    } catch ( ex ) {
+      server.logMessage( "Exception with get/create temporary directory " + ex.number + " : " + ex.message );
+      return 1;
+    }
+    var tempFileWithPath = outdir.Path + "\\" + filename;
+
+    var sha1Sum = server.getSHA1Sum( 1 ); // file at index 1
+    if ( !sha1Sum ) {
+      server.logMessage( "Cannot read SHA1SUM from file. Corrupted file." );
+      return 1;
+    }
+
+    try {
+      server.extractFile( 1, tempFileWithPath ); // file at index 1
+    } catch ( ex ) {
+      server.logMessage( "Error when extracting file " + ex.number + " : " + ex.message + "File may already exist." );
+    }
+    var sha1SumCalc = server.getSHA1Sum( tempFileWithPath );
+    if ( sha1SumCalc !== sha1Sum ) {
+      server.logMessage( "Wrong SHA1SUM. Corrupted file." );
+      return 1;
+    }
+
+    // File is ok - construct a command line argument string as needed.
+    var userSpecficParams = "modify as needed";
+    var commandLine = tempFileWithPath + " " + userSpecficParams;
+
+    // Modify the commandLine further if required...
+
+
+    var exec = shell.Exec( commandLine );
+
+    wait( exec, 3 * 3600 * 1000 ); // timeout in 3 hours
+
+    if ( !exec.Status ) {
+      server.logMessage( "Executed command, but failed to complete. Abandoning." );
+      exec.Terminate();
+      wait( exec, 300 * 1000 ); // timeout in 5 mins 
+      sys.DeleteFolder( outdir.Path );
+      return 1;
+    } else {
+      server.logMessage( "Executed command, return status is " + exec.ExitCode );
+      shell.RegWrite( "HKLM\\Software\\Secunia\\Updates\\Installed\\" + GUID + "\\", Title );
+      try {
+        sys.DeleteFolder( outdir.Path ); // Clean up...
+      } catch ( ex ) {
+        server.logMessage( "Unable to erase temp folder due to error " + ex.number + " : " + ex.message );
+      }
+    }
+
+    server.logMessage( "Finished running package " + Title );
+
+    return exec.ExitCode;
+
+  } catch ( ex ) {
+    server.logMessage( "Exception " + ex.number + " : " + ex.message );
+    return ex.number;
+  }
+}
+
+
+// The function waits for the command to complete its execution or times out
+function wait( execObject, timeout ) {
+  var start = (new Date()).valueOf();
+  while ( 0 === execObject.Status && (new Date()).valueOf()-start < timeout ) {
+    server.sleep(1000);
+  }
+}
+
+var exitCode = main();
+// Windows Installer returns an exit code of 3010 to indicate a successful install that
+// requires a reboot. We need to return an exit code of 0 for success.
+if ( 3010 === exitCode ) {
+    exitCode = 0;
+}
+server.setExitCode( exitCode );
+server.logMessage( "Returning " + server.getExitCode() );
+

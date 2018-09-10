@@ -1,0 +1,25 @@
+ESET v4a Uninstall Strings for WinXP & Win7+
+"C:\Program Files\ESET\ESET Smart Security\callmsi.exe" /x {36A3719F-8A06-451A-935A-B4A5BAE77C87} /qn /norestart
+"C:\Program Files\ESET\ESET Smart Security\callmsi.exe" /x {36A3719F-8A06-451A-935A-B4A5BAE77C87} /qn /norestart PASSWORD=admin12345
+
+ESET v4b Uninstall Strings for WinXP & Win7+
+"C:\Program Files\ESET\ESET NOD32 Antivirus\callmsi.exe" /x {2EEBAC31-3EEF-4118-91CB-1A286A507DB2} /qn /norestart
+"C:\Program Files\ESET\ESET NOD32 Antivirus\callmsi.exe" /x {2EEBAC31-3EEF-4118-91CB-1A286A507DB2} /qn /norestart  PASSWORD=admin12345
+
+ESET v5a Uninstall Strings FOR WINXP
+"C:\Program Files\ESET\ESET Endpoint Security\callmsi.exe" /x {950B1859-7F95-4CCF-8674-0F843B58CCAB} /qn /norestart
+"C:\Program Files\ESET\ESET Endpoint Security\callmsi.exe" /x {950B1859-7F95-4CCF-8674-0F843B58CCAB} /qn /norestart PASSWORD=admin12345
+
+ESET v5a Uninstall Strings FOR WIN7+
+"C:\Program Files\ESET\ESET Endpoint Security\callmsi.exe" /x {4544542B-6BC5-4BA8-AA52-05C07A1D59F1} /qn /norestart
+"C:\Program Files\ESET\ESET Endpoint Security\callmsi.exe" /x {4544542B-6BC5-4BA8-AA52-05C07A1D59F1} /qn /norestart PASSWORD=admin12345
+
+
+ESET v5b Uninstall Strings FOR WINXP
+"C:\Program Files\ESET\ESET Endpoint Security\callmsi.exe" /x {24B89EC5-9058-463A-A86E-9E45A347124E} /qn /norestart
+"C:\Program Files\ESET\ESET Endpoint Security\callmsi.exe" /x {24B89EC5-9058-463A-A86E-9E45A347124E} /qn /norestart  PASSWORD=admin12345
+
+ESET v5b Uninstall Strings FOR WIN7+
+"C:\Program Files\ESET\ESET Endpoint Security\callmsi.exe" /x {D8AB89CA-2CDD-4D0A-95C1-7E9F80E96695} /qn /norestart
+"C:\Program Files\ESET\ESET Endpoint Security\callmsi.exe" /x {D8AB89CA-2CDD-4D0A-95C1-7E9F80E96695} /qn /norestart PASSWORD=admin12345
+
